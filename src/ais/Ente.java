@@ -1,12 +1,7 @@
 package ais;
 
-//import java.util.ArrayList;
-
 import java.util.ArrayList;
-
 import apoMario.ai.ApoMarioAI;
-//import apoMario.ai.ApoMarioAIConstants;
-//import apoMario.ai.ApoMarioAIEnemy;
 import apoMario.ai.ApoMarioAIConstants;
 import apoMario.ai.ApoMarioAIEnemy;
 import apoMario.ai.ApoMarioAILevel;
@@ -86,7 +81,7 @@ public class Ente extends ApoMarioAI{
 		
 		if (x >= z) 
 			return 1;
-		else if (collision(x, y, level) || y <= 5 || y >= 14)
+		else if (collision(x, y, level) || y <= 2 || y >= 14)
 			return 1000;
 		else {
 			int up = rec(x+1,y-1, z, level)+3;
@@ -100,22 +95,9 @@ public class Ente extends ApoMarioAI{
 	private static boolean collision(int x, int y, ApoMarioAILevel level) {
 
 		ArrayList<ApoMarioAIEnemy> list = level.getEnemies(); 
-		for (int i = 0; i < list.size(); i++) { 
-			
-			if ((int)list.get(i).getX()-x <= 2 && (int)list.get(i).getY()-y <= 2 && !list.get(i).isFireballType()) return true;
-//			if ((int)list.get(i).getX() == x && (int)list.get(i).getY() == y-1 && !list.get(i).isFireballType()) return true;
-//			if ((int)list.get(i).getX() == x && (int)list.get(i).getY() == y && !list.get(i).isFireballType()) return true;
-//			if ((int)list.get(i).getX() == x && (int)list.get(i).getY() == y+1 && !list.get(i).isFireballType()) return true;
-//			if ((int)list.get(i).getX() == x && (int)list.get(i).getY() == y+2 && !list.get(i).isFireballType()) return true;
-//			if ((int)list.get(i).getX() == x+1 && (int)list.get(i).getY() == y-1 && !list.get(i).isFireballType()) return true;
-//			if ((int)list.get(i).getX() == x+1 && (int)list.get(i).getY() == y && !list.get(i).isFireballType()) return true; 
-//			if ((int)list.get(i).getX() == x+1 && (int)list.get(i).getY() == y+1 && !list.get(i).isFireballType()) return true; 
-//			if ((int)list.get(i).getX() == x+1 && (int)list.get(i).getY() == y+2 && !list.get(i).isFireballType()) return true; 
-//			if ((int)list.get(i).getX() == x+2 && (int)list.get(i).getY() == y-1 && !list.get(i).isFireballType()) return true;
-//			if ((int)list.get(i).getX() == x+2 && (int)list.get(i).getY() == y && !list.get(i).isFireballType()) return true;  
-//			if ((int)list.get(i).getX() == x+2 && (int)list.get(i).getY() == y+1 && !list.get(i).isFireballType()) return true; 
-//			if ((int)list.get(i).getX() == x+2 && (int)list.get(i).getY() == y+2 && !list.get(i).isFireballType()) return true; 
-		} 
+		for (int i = 0; i < list.size(); i++)
+			if ((int)list.get(i).getX()-x <= 2 && (int)list.get(i).getX()-x >= -2 && (int)list.get(i).getY()-y <= 2 && (int)list.get(i).getY()-y >= -2 && !list.get(i).isFireballType()) return true;
+
 		
 		return 
 			level.getLevelArray()[y][x] != ApoMarioAIConstants.LEVEL_EMPTY ||
@@ -123,13 +105,6 @@ public class Ente extends ApoMarioAI{
 			level.getLevelArray()[y-1][x] != ApoMarioAIConstants.LEVEL_EMPTY ||
 			level.getLevelArray()[y-1][x+1] != ApoMarioAIConstants.LEVEL_EMPTY ||
 			level.getLevelArray()[y][x+1] != ApoMarioAIConstants.LEVEL_EMPTY
-//			level.getLevelArray()[y][x] == ApoMarioAIConstants.LEVEL_CANNON ||
-//			level.getLevelArray()[y-1][x] == ApoMarioAIConstants.LEVEL_CANNON ||
-//			level.getLevelArray()[y-1][x+1] == ApoMarioAIConstants.LEVEL_CANNON ||
-//			level.getLevelArray()[y+1][x+1] == ApoMarioAIConstants.LEVEL_CANNON ||
-//			level.getLevelArray()[y][x] == ApoMarioAIConstants.LEVEL_QUESTIONMARKBOX ||
-//			level.getLevelArray()[y-1][x] == ApoMarioAIConstants.LEVEL_QUESTIONMARKBOX||
-//			level.getLevelArray()[y-1][x+1] == ApoMarioAIConstants.LEVEL_QUESTIONMARKBOX
 			? true : false;
 	}
 }
