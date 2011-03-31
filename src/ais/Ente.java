@@ -26,27 +26,17 @@ public class Ente extends ApoMarioAI{
 		
 		int x = (int)(player.getX()+0.5);
 		int y = player.getType() > 0 ? (int)(player.getY()+1.5) : (int)(player.getY()+0.9);
+		
+		int j = player.getVecY() > 0.02 ? -4 : player.getVecY() > 0.01 ? -3 : player.getVecY() > 0 ? -1 : player.getVecY() == 0 ? 5 : player.getVecY() > -0.01 ? 2 : player.getVecY() > -0.015 ? 3 : player.getVecY() > -0.02 ? 4 : 5;
 
-		int direction = search(x, y, level, player);
+		int direction = search(x, y, j, level);
 		
 		player.runRight();
 		player.runFast();
 		
-		if (direction == 3) {
+		if (direction == 3)
 			player.jump();
-			player.runRight();
-			player.runFast();
-		}
-		else if (direction == 2) {
-			player.runRight();
-			player.runFast();
-		}
-		else if (direction == 1) {
-			player.runRight();
-			player.runFast();
-		}
 		else if (direction == 4) {
-//			player.runStand();
 			player.jump();
 			player.drawRect(x, 3, 1, 1, true, 5000);
 		}
@@ -57,19 +47,15 @@ public class Ente extends ApoMarioAI{
 	}
 
 	
-	public static int search(int x, int y, ApoMarioAILevel level, ApoMarioAIPlayer player) {
+	public static int search(int x, int y, int j, ApoMarioAILevel level) {
 		
 		int z = x + 8;
-		int j = player.getVecY() > 0.02 ? -4 : player.getVecY() > 0.01 ? -3 : player.getVecY() > 0 ? -1 : player.getVecY() == 0 ? 5 : player.getVecY() > -0.01 ? 2 : player.getVecY() > -0.015 ? 3 : player.getVecY() > -0.02 ? 4 : 5;
 		
 		int up = j <= 0 ? 1000 : rec(j>3 ? x : x+1, y-1, z, j-1, level)+1;
 		int forward = !collision(x+1, y+1, level) || collision(x+1, y, level) ? 1000 : rec(x+1, y, z, j, level)+1;
 		int down = collision(x+1, y, level) ? 1000 : rec(x+1, y+1, z, j > 0 ? 0 : j-1, level)+1;
-		player.addMessage(String.valueOf(j));
 		if (y < 2) return 1;
 		if (collision(x,y,level) || up >= 1000 && forward >= 1000 && down >= 1000) return 4;
-//		if (level.getLevelArray()[14][x+1] == ApoMarioAIConstants.LEVEL_EMPTY) return 3;
-//		if (level.getLevelArray()[14][x+2] == ApoMarioAIConstants.LEVEL_EMPTY) return 3;
 		
 		return (up < forward) && (up < down) ? 3 : (forward < down) ? 2 : 1;
 	}
@@ -97,8 +83,6 @@ public class Ente extends ApoMarioAI{
 		return 
 			level.getLevelArray()[y][x] != ApoMarioAIConstants.LEVEL_EMPTY ||
 			level.getLevelArray()[y-1][x] != ApoMarioAIConstants.LEVEL_EMPTY 
-//			level.getLevelArray()[y-1][x+1] != ApoMarioAIConstants.LEVEL_EMPTY ||
-//			level.getLevelArray()[y][x+1] != ApoMarioAIConstants.LEVEL_EMPTY
 			? true : false;
 	}
 
