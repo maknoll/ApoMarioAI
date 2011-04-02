@@ -1,17 +1,18 @@
 package ais;
 
 import java.util.ArrayList;
+
 import apoMario.ai.ApoMarioAI;
 import apoMario.ai.ApoMarioAIConstants;
 import apoMario.ai.ApoMarioAIEnemy;
 import apoMario.ai.ApoMarioAILevel;
 import apoMario.ai.ApoMarioAIPlayer;
 
-public class Ente extends ApoMarioAI{
+public class Ente2 extends ApoMarioAI{
 	
 	@Override
 	public String getTeamName() {
-		return "Ente";
+		return "Ente2";
 	}
 
 	@Override
@@ -38,38 +39,24 @@ public class Ente extends ApoMarioAI{
 
 	
 	public static boolean search(int x, int y, int z, int j, ApoMarioAILevel level) {
-		
-		if (y < 2) 
+
+		if (j <= 0)
 			return false;
-		
-		if (collision(x,y,level)) 
-			return true;
-		
-		int up = j <= 0 ? 1000 : rec(j>3 ? x : x+1, y-1, z, j-1, level)+1;
-		int forward = !collision(x+1, y+1, level) ? 1000 : rec(x+1, y, z, j, level)+1;
-		int down = collision(x+1, y, level) ? 1000 : rec(x+1, y+1, z, j > 0 ? 0 : j-1, level)+1;
-		
-		if (up >= 1000 && forward >= 1000 && down >= 1000) return true;
-		
-		return up < forward && up < down;
+
+		return !(rec(x+1, y, z, j, level) || rec(x+1, y+1, z, j > 0 ? 0 : j-1, level));
 	}
 	
-	private static int rec(int x, int y, int z, int j, ApoMarioAILevel level) {
+	public static boolean rec(int x, int y, int z, int j, ApoMarioAILevel level) {
 		
 		if (x >= z) 
-			return 1;
-		else if (isEnemy(x, y, level))
-			return 1000;
-		else if (collision(x, y, level) || y <= 2 || y >= 14)
-			return 1000;
-		else {
-			j = collision(x, y+1, level) ? 5 : j;
-			int up = j <= 0 || collision(x, y-2, level) ? 1000 : rec(x+1, y-1, z, j-1, level)+1;
-			int forward = !collision(x+1, y+1, level) ? 1000 : rec(x+1, y, z, j, level)+1;
-			int down = collision(x+1, y, level) ? 1000 : rec(j<-4 ? x : x+1, y+1, z, j > 0 ? 0 : j-1, level)+1;
-			
-			return (up < forward) && (up < down) ? up : (forward < down) ? forward : down;
-		}
+			return true;
+		
+		if (collision(x,y,level) || collision(x,y-1,level) || isEnemy(x, y, level) || y <= 2 || y >= 14) 
+			return false;
+		
+		j = collision(x, y+1, level) ? 5 : j;
+		
+		return (j <= 0 ? false : rec(j>3 ? x : x+1, y-1, z, j-1, level)) || (!collision(x+1, y+1, level) ? false : rec(x+1, y, z, j, level)) || rec(j<-4 ? x : x+1, y+1, z, j > 0 ? 0 : j-1, level);
 	}
 	
 	private static boolean collision(int x, int y, ApoMarioAILevel level) {
