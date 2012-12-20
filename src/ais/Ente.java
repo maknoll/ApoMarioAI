@@ -74,6 +74,8 @@ public class Ente extends ApoMarioAI{
 	
 	private static boolean collision(int x, int y, ApoMarioAILevel level) {
 		
+		if (y>14) return false;
+		
 		return 
 			level.getLevelArray()[y][x] != ApoMarioAIConstants.LEVEL_EMPTY ||
 			level.getLevelArray()[y-1][x] != ApoMarioAIConstants.LEVEL_EMPTY 
